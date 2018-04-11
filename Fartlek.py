@@ -10,10 +10,10 @@ USER INPUTS: minimum interval length, maximum interval length, and run length
 OUTPUTS: Randomized interval lengths and paces.
 '''
 
-# IMPORTS
+# ----IMPORTS----
 import random
 
-# USER INPUTS
+# ----USER INPUTS----
 
 # Minimum interval length
 while True:
@@ -50,11 +50,11 @@ while True:
     else:
         break
         
-# Total run time
+# Run length
 while True:
     try:
         print("\n")
-        total_run_time = int(input("Total run time (minutes): "))
+        run_length = int(input("Desired run length (minutes): "))
     except:
         print("\n")
         print("ERROR: Must input an integer.")
@@ -63,32 +63,48 @@ while True:
         print("\n")
         print("ERROR: Must input a positive integer.")
         continue
-    elif total_run_time < max_interval/60:
+    elif run_length < max_interval/60:
         print("\n")
         print(f"ERROR: Cannot run for less time than the previously-defined maximum interval length ({max_interval/60} minutes)!")
     else:
         break
 
-# INITIALIZE
+# ----INITIALIZE----
 running_time = 0
 interval = 0
 interval_list = []
 pace_list = []
 
-# BUILD
-
+# ----BUILD----
 # Interval length options
 time_options = list(range(min_interval,max_interval+min_interval,min_interval))
 
 # Create randomized intervals
-while running_time < total_run_time * 60:
+while running_time < run_length * 60:
     interval = random.choices(time_options)[0]
     interval_list.append(interval)
     running_time += interval
+    
+while running_time > run_length:
+    if interval_list[-1] < (running_time/60 - run_length)*60:
+        remove_interval = interval_list.pop()
+        running_time -= remove_interval
+        continue
+    else:
+        reduce_interval = (running_time/60 - run_length)*60
+        interval_list[-1] -= reduce_interval
+        running_time -= reduce_interval
+        break
 
 # Create a randomized pace list
-for x in range(0,len(interval_list)):
-    pace_list.append(random.randint(1,3))
+pace_list.append(random.randint(1,3))
+for x in range(1,len(interval_list)):
+    if pace_list[-1] == 1:
+        pace_list.append(random.randint(2,3))
+    elif pace_list[-1] == 2:
+        pace_list.append(random.choices([1,3])[0])
+    elif pace_list[-1] == 3:
+        pace_list.append(random.randint(1,2))
 
 for i in range(0,len(pace_list)):
     if pace_list[i] == 1:
@@ -98,6 +114,7 @@ for i in range(0,len(pace_list)):
     elif pace_list[i] == 3:
         pace_list[i] = "fast"
 
+# ----PRINT RESULTS----
 print("\n"*100)
 print(f"Total run time: {running_time/60} minutes")
 print(f"Number of intervals: {len(interval_list)}")
