@@ -3,7 +3,7 @@ This creates a randomized Fartlek run.
 
 A Fartlek run is one typically done with two or more people where each person
 will take turns choosing how far and fast they are to run, e.g. "sprint to
-the next tree" or "job until the end of the block."
+the next tree" or "jog until the end of the block."
 
 USER INPUTS: minimum interval length, maximum interval length, and run length
 
@@ -84,14 +84,15 @@ while running_time < run_length * 60:
     interval = random.choices(time_options)[0]
     interval_list.append(interval)
     running_time += interval
-    
+   
+# Adjust if too long
 while running_time > run_length:
     if interval_list[-1] < (running_time/60 - run_length)*60:
         remove_interval = interval_list.pop()
         running_time -= remove_interval
         continue
     else:
-        reduce_interval = (running_time/60 - run_length)*60
+        reduce_interval = int((running_time/60 - run_length)*60)
         interval_list[-1] -= reduce_interval
         running_time -= reduce_interval
         break
