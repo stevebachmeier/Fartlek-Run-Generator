@@ -1,4 +1,4 @@
-# Fartlek-Run-Generator
+# Fartlek run generator
 This creates a randomized Fartlek run (suitable when you don't have a running partner).
 
 A Fartlek run is one typically done with two or more people where each person
